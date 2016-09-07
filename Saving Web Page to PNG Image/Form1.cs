@@ -19,27 +19,31 @@ namespace Saving_Web_Page_to_PNG_Image
     public partial class Form1 : Form
     {
 
-        BrowserView browserView = new WinFormsBrowserView();
-
         public Form1()
         {
             InitializeComponent();
+        }
 
-            Controls.Add((Control)browserView);
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            browserView.Browser.LoadURL("http://www.google.com");
+
+            ComplexPageLoad();
+
+            this.Text = browserView.Browser.Title;
+            toolStripAddress.Text = browserView.Browser.URL.ToString();
         }
 
         private void toolStripAddress_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
+                ComplexPageLoad();
                 browserView.Browser.LoadURL(toolStripAddress.Text.ToString());
+                this.Text = browserView.Browser.Title;
+                toolStripAddress.Text = browserView.Browser.URL.ToString();
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            browserView.Browser.LoadURL("http://www.google.com");
-            toolStripAddress.Text = browserView.Browser.URL.ToString();
         }
 
         private void toolStripUpload_Click(object sender, EventArgs e)
@@ -92,7 +96,7 @@ namespace Saving_Web_Page_to_PNG_Image
             // about paint events. We expect that web page will be completely rendered twice:
             // 1. When its size is updated.
             // 2. When HTML content is loaded and displayed.
-            ManualResetEvent waitEvent = new ManualResetEvent(false);
+            //ManualResetEvent waitEvent = new ManualResetEvent(false);
 
             DrawingView drawingView = (DrawingView)browserView1.GetImage();
             browserView1.Browser.SetSize(viewWidth, viewHeight);
@@ -113,13 +117,43 @@ namespace Saving_Web_Page_to_PNG_Image
                 string imageFileName = saveFileDialog.FileName.ToString().Replace("%.png%", "");
                 browserView1.GetImage().Save(imageFileName, ImageFormat.Png);
             }
-            browser.Dispose();
+            if (!browser.IsDisposed())
+            {
+                browser.Dispose();
+                //browserViewTemp.Dispose();
+            }
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            browserView.Dispose();
+            if (!browserView.Browser.IsDisposed())
+            {
+                browserView.Browser.Dispose();
+
+            }
+        }
+
+
+        private void ComplexPageLoad()
+        {
+            ManualResetEvent resetEvent = new ManualResetEvent(false);
+            FinishLoadingFrameHandler listener = new FinishLoadingFrameHandler((object sender, FinishLoadingEventArgs e) =>
+            {
+                if (e.IsMainFrame)
+                {
+                    resetEvent.Set();
+                }
+            });
+            browserView.Browser.FinishLoadingFrameEvent += listener;
+            try
+            {
+                browserView.Browser.LoadURL(toolStripAddress.Text.ToString());
+                resetEvent.WaitOne(new TimeSpan(0, 0, 45));
+            }
+            finally
+            {
+                browserView.Browser.FinishLoadingFrameEvent -= listener;
+            }
         }
     }
 }
-

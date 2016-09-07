@@ -33,6 +33,7 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripAddress = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripUpload = new System.Windows.Forms.ToolStripButton();
+            this.browserView = new DotNetBrowser.WinForms.WinFormsBrowserView();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,15 +72,24 @@
             this.toolStripUpload.ToolTipText = "Load";
             this.toolStripUpload.Click += new System.EventHandler(this.toolStripUpload_Click);
             // 
+            // browserView
+            // 
+            this.browserView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.browserView.Location = new System.Drawing.Point(0, 25);
+            this.browserView.Name = "browserView";
+            this.browserView.Size = new System.Drawing.Size(852, 444);
+            this.browserView.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 469);
+            this.Controls.Add(this.browserView);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -94,6 +104,7 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox toolStripAddress;
         private System.Windows.Forms.ToolStripButton toolStripUpload;
+        private DotNetBrowser.WinForms.WinFormsBrowserView browserView;
     }
 }
 
