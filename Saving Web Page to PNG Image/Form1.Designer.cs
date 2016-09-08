@@ -34,7 +34,9 @@
             this.toolStripAddress = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripUpload = new System.Windows.Forms.ToolStripButton();
             this.browserView = new DotNetBrowser.WinForms.WinFormsBrowserView();
+            this.winFormsBrowserView1 = new DotNetBrowser.WinForms.WinFormsBrowserView();
             this.toolStrip1.SuspendLayout();
+            this.browserView.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -74,11 +76,20 @@
             // 
             // browserView
             // 
+            this.browserView.Controls.Add(this.winFormsBrowserView1);
             this.browserView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.browserView.Location = new System.Drawing.Point(0, 25);
             this.browserView.Name = "browserView";
             this.browserView.Size = new System.Drawing.Size(852, 444);
             this.browserView.TabIndex = 2;
+            // 
+            // winFormsBrowserView1
+            // 
+            this.winFormsBrowserView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.winFormsBrowserView1.Location = new System.Drawing.Point(0, 0);
+            this.winFormsBrowserView1.Name = "winFormsBrowserView1";
+            this.winFormsBrowserView1.Size = new System.Drawing.Size(852, 444);
+            this.winFormsBrowserView1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -87,12 +98,13 @@
             this.ClientSize = new System.Drawing.Size(852, 469);
             this.Controls.Add(this.browserView);
             this.Controls.Add(this.toolStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Form1";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.browserView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -105,6 +117,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripAddress;
         private System.Windows.Forms.ToolStripButton toolStripUpload;
         private DotNetBrowser.WinForms.WinFormsBrowserView browserView;
+        private DotNetBrowser.WinForms.WinFormsBrowserView winFormsBrowserView1;
     }
 }
 

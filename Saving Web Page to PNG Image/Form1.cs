@@ -120,19 +120,9 @@ namespace Saving_Web_Page_to_PNG_Image
             if (!browser.IsDisposed())
             {
                 browser.Dispose();
-                //browserViewTemp.Dispose();
+                browserView1.Dispose();
             }
         }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!browserView.Browser.IsDisposed())
-            {
-                browserView.Browser.Dispose();
-
-            }
-        }
-
 
         private void ComplexPageLoad()
         {
