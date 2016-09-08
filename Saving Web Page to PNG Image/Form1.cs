@@ -1,4 +1,5 @@
 ﻿using DotNetBrowser;
+using DotNetBrowser.DOM;
 using DotNetBrowser.Events;
 using DotNetBrowser.WinForms;
 using DotNetBrowser.WPF;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -144,6 +146,92 @@ namespace Saving_Web_Page_to_PNG_Image
             {
                 browserView.Browser.FinishLoadingFrameEvent -= listener;
             }
+        }
+
+        private void toolStripGoogleSearchToFile_Click(object sender, EventArgs e)
+        {
+            string allTextToFile = "";
+            Browser browser = BrowserFactory.Create();
+            ManualResetEvent resetEvent = new ManualResetEvent(false);
+            FinishLoadingFrameHandler listener = new FinishLoadingFrameHandler((object sender1, FinishLoadingEventArgs e1) =>
+            {
+                if (e1.IsMainFrame)
+                {
+                    resetEvent.Set();
+                }
+            });
+            browser.FinishLoadingFrameEvent += listener;
+            try
+            {
+                browser.LoadURL("https://www.google.com.ua/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=hi");
+                resetEvent.WaitOne(new TimeSpan(0, 0, 45));
+            }
+            finally
+            {
+                browser.FinishLoadingFrameEvent -= listener;
+            }
+
+            // Get Web page
+            DOMDocument document = browser.GetDocument();
+
+
+                        //Only for Google search results
+                        int countDiv = document.GetElementsByTagName("div").Count;
+
+                        int countH3 = 0;
+
+                        //Quantity of h3 tags in div tags
+                        for (int i = 0; i < countDiv; i++)
+                        {
+                            int tmpH3 = document.GetElementsByTagName("div")[i].GetElementsByTagName("h3").Count;
+                            countH3 += tmpH3;
+                        }
+
+                        //For debug
+                        Console.Out.WriteLine("div = " + countDiv);
+                        Console.Out.WriteLine("h3 = " + countH3);
+
+                        //Search for a tags in h3
+                        for (int i = 0; i < countH3; i++)
+                        {
+
+                            string text = document.GetElementsByTagName("h3")[i].GetElementByTagName("a").InnerText.ToString();
+
+                            //string match = Regex.Match(text, "<a.*?>(.*)</a>").Value.ToString();
+                            //Console.Out.WriteLine(text);
+                            //For debug
+                            Console.Out.WriteLine("# " + (i + 1) + "\nname =  " + text + "\nhyperlink = " +
+                                        document.GetElementsByTagName("h3")[i].GetElementByTagName("a").GetAttribute("href") + "\n");
+
+                            //Make string for add to file
+                            string textToFile = "# " + (i + 1) + Environment.NewLine +
+                               "name =  " + text + Environment.NewLine +
+                               "hyperlink = " + document.GetElementsByTagName("h3")[i].GetElementByTagName("a").GetAttribute("href") + Environment.NewLine;
+
+                            allTextToFile += textToFile + Environment.NewLine;
+
+
+                        }
+
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "TXT files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+
+            //Choose path and name to save the file
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Format name of file
+                string txtFileName = saveFileDialog.FileName.ToString();
+                //string weq = saveFileDialog.
+                File.WriteAllText(txtFileName, allTextToFile);
+
+            }  
+            if (browser.IsDisposed())
+            {
+                browser.Dispose();
+            }          
         }
     }
 }

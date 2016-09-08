@@ -35,6 +35,7 @@
             this.toolStripUpload = new System.Windows.Forms.ToolStripButton();
             this.browserView = new DotNetBrowser.WinForms.WinFormsBrowserView();
             this.winFormsBrowserView1 = new DotNetBrowser.WinForms.WinFormsBrowserView();
+            this.toolStripGoogleSearchToFile = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.browserView.SuspendLayout();
             this.SuspendLayout();
@@ -44,7 +45,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.toolStripAddress,
-            this.toolStripUpload});
+            this.toolStripUpload,
+            this.toolStripGoogleSearchToFile});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(852, 25);
@@ -91,6 +93,16 @@
             this.winFormsBrowserView1.Size = new System.Drawing.Size(852, 444);
             this.winFormsBrowserView1.TabIndex = 0;
             // 
+            // toolStripGoogleSearchToFile
+            // 
+            this.toolStripGoogleSearchToFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripGoogleSearchToFile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripGoogleSearchToFile.Image")));
+            this.toolStripGoogleSearchToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripGoogleSearchToFile.Name = "toolStripGoogleSearchToFile";
+            this.toolStripGoogleSearchToFile.Size = new System.Drawing.Size(119, 22);
+            this.toolStripGoogleSearchToFile.Text = "Google search to file";
+            this.toolStripGoogleSearchToFile.Click += new System.EventHandler(this.toolStripGoogleSearchToFile_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -118,6 +130,7 @@
         private System.Windows.Forms.ToolStripButton toolStripUpload;
         private DotNetBrowser.WinForms.WinFormsBrowserView browserView;
         private DotNetBrowser.WinForms.WinFormsBrowserView winFormsBrowserView1;
+        private System.Windows.Forms.ToolStripButton toolStripGoogleSearchToFile;
     }
 }
 
